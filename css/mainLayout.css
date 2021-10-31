@@ -1,0 +1,79 @@
+/* Copyright (c) 2017 MIT 6.813/6.831 course staff, all rights reserved.
+* Redistribution of original or derived work requires permission of course staff.
+*/
+
+body {
+  overflow: hidden;
+  background: #222;
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+div {
+  color: white;
+}
+table {
+  width: 320px;
+  height: 320px;
+}
+
+button {
+  cursor: pointer;
+}
+.row {
+  height: 100vh;
+}
+.column {
+  float: left;
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column.c2 {
+  width: 50%;
+}
+
+.candy {
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2px;
+  width: 100%;
+  height: 7vh;
+  color: black;
+}
+/* row-container class */
+.row-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.arrow {
+  zoom: 5;
+  color: #ff2764;
+}
+.arrow:hover {
+  cursor: pointer;
+  color: #ffc7d7;
+  /* drop shadow */
+  text-shadow: 0px 0px 6px #fc88a8;
+}
+/* Your css code here! */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}

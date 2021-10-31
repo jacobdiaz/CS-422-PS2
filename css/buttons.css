@@ -1,0 +1,16 @@
+.start-btn {
+  color: hsl(208, 100%, 97%);
+  background: #fc88a8;
+  margin: 20px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  filter: drop-shadow(0px 2px 2px hsl(0deg 0% 0% / 0.5)) drop-shadow(0px 0px 4px hsl(333deg 100% 50% / 0.5))
+    drop-shadow(0px 0px 10px hsl(333deg 100% 50% / 0.5)) drop-shadow(0px 0px 50px hsl(333deg 100% 50% / 1));
+}
+.start-btn:hover {
+  background: #ff2764;
+  width: 90%;
+  transition: 0.25s ease-in-out;
+}

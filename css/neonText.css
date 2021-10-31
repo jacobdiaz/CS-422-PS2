@@ -1,0 +1,35 @@
+/* https://codepen.io/ulrikapan/pen/MvppPL */
+
+.neonText h1 {
+  font-size: 3.5vw;
+  font-weight: 500;
+  color: #fff;
+  text-shadow: 0px 0px 10px #78e0f2, 0px 0px 20px #78e0f2, 0px 0px 30px #78e0f2, 0px 0px 40px #78e0f2, 0px 0px 50px #78e0f2;
+}
+.neonText h1 span:nth-child(2) {
+  text-shadow: 0px 0px 10px #fc88a8, 0px 0px 20px #fc88a8, 0px 0px 30px #fc88a8, 0px 0px 40px #fc88a8, 0px 0px 50px #fc88a8;
+}
+.neonText h1 span:nth-child(1) {
+  animation: flash 2s infinite ease-in 0.5s;
+}
+.neonText {
+  text-align: center;
+  width: 100%;
+  top: 50%;
+}
+
+@keyframes flash {
+  0% {
+    text-shadow: 0px 0px 10px #78e0f2, 0px 0px 20px #78e0f2, 0px 0px 30px #78e0f2, 0px 0px 40px #78e0f2, 0px 0px 50px #78e0f2;
+  }
+  25% {
+    text-shadow: 0px 0px 10px #78e0f2, 0px 0px 20px #78e0f2, 0px 0px 30px #78e0f2, 0px 0px 40px #78e0f2, 0px 0px 50px #78e0f2;
+  }
+  50% {
+    text-shadow: 0px 0px 10px #78e0f2;
+  }
+  100% {
+    color: rgba(255, 255, 255, 0.2);
+    text-shadow: 0px 0px 0px rgba(255, 255, 255, 0.2);
+  }
+}
