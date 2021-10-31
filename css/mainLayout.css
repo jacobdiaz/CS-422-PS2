@@ -45,7 +45,7 @@ button {
 }
 
 .candy {
-  background: #fff;
+  /* background: #fff; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,13 +54,15 @@ button {
   height: 7vh;
   color: black;
 }
-/* row-container class */
+
 .row-container {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
 }
+
+/* ! Third Column */
 .arrow {
   zoom: 5;
   color: #ff2764;
@@ -70,6 +72,13 @@ button {
   color: #ffc7d7;
   /* drop shadow */
   text-shadow: 0px 0px 6px #fc88a8;
+}
+.move-input {
+  background: white;
+  border: none;
+  border-radius: 2px;
+  padding: 5px;
+  color: black;
 }
 /* Your css code here! */
 @media screen and (max-width: 600px) {
