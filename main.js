@@ -1,6 +1,3 @@
-// By default, the first board loaded by your page will be the same
-// each time you load (which is accomplished by "seeding" the random
-// number generator. This makes testing (and grading!) easier!
 Math.seedrandom(0);
 
 // A short jQuery extension to read query parameters from the URL.
@@ -35,23 +32,12 @@ var rules;
 board = new Board(DEFAULT_BOARD_SIZE);
 // }
 
-// Final initialization entry point: the Javascript code inside this block
-// runs at the end of start-up when the page has finished loading.
-
 $(document).ready(function () {
-  console.log("ready");
-
   generateBoard();
   $(board).on("add", function (e, info) {
-    let candy = info.candy;
-    let { col, row } = candy; // destructure the vars
-
-    console.log(`${candy} ${col} ${row}`);
-
-    // Set the color
-    $(`.candy.${col}${row}`).css({ backgroundColor: candy });
+    setCellColors(info);
   });
-
+  console.log(allCandies);
   rules = new Rules(board);
   rules.prepareNewGame();
 
@@ -66,8 +52,9 @@ $(document).ready(function () {
 $(document).keydown(function (e) {
   if (e.keyCode == 37) {
     let move = $(".move-input").val();
-    console.log(move);
-    rules.isMoveTypeValid(move, "left") ? console.log("valid") : console.log("invalid");
+    let infoObject = allCandies[move];
+    console.log(infoObject.candy);
+    rules.isMoveTypeValid(infoObject.candy, "up") ? console.log("valid") : console.log("invalid");
   }
 });
 
@@ -75,8 +62,9 @@ $(document).keydown(function (e) {
 $(document).keydown(function (e) {
   if (e.keyCode == 39) {
     let move = $(".move-input").val();
-    console.log(move);
-    rules.isMoveTypeValid(move, "right") ? console.log("valid") : console.log("invalid");
+    let infoObject = allCandies[move];
+    console.log(infoObject.candy);
+    rules.isMoveTypeValid(infoObject.candy, "down") ? console.log("valid") : console.log("invalid");
   }
 });
 
@@ -84,8 +72,9 @@ $(document).keydown(function (e) {
 $(document).keydown(function (e) {
   if (e.keyCode == 38) {
     let move = $(".move-input").val();
-    console.log(move);
-    rules.isMoveTypeValid(move, "up") ? console.log("valid") : console.log("invalid");
+    let infoObject = allCandies[move];
+    console.log(infoObject.candy);
+    rules.isMoveTypeValid(infoObject.candy, "left") ? console.log("valid") : console.log("invalid");
   }
 });
 
@@ -93,17 +82,16 @@ $(document).keydown(function (e) {
 $(document).keydown(function (e) {
   if (e.keyCode == 40) {
     let move = $(".move-input").val();
-    console.log(move);
-    rules.isMoveTypeValid(move, "down") ? console.log("valid") : console.log("invalid");
+    let infoObject = allCandies[move];
+    console.log(infoObject.candy);
+    rules.isMoveTypeValid(infoObject.candy, "right") ? console.log("valid") : console.log("invalid");
   }
 });
 
 //#endregion
 
 // move a candy on the board
-$(board).on("move", function (e, info) {
-  // Your code here.
-});
+$(board).on("move", function (e, info) {});
 
 // remove a candy from the board
 $(board).on("remove", function (e, info) {
@@ -124,4 +112,16 @@ const generateBoard = () => {
       $(`.tr${i}`).append(`<td class='candy ${i - 1}${j - 1}'>${letters[i - 1]}${j}</td>`);
     }
   }
+};
+
+let allCandies = {}; // All candies gets hoisted to the key press funcs
+
+const setCellColors = (info) => {
+  let candy = info.candy;
+  let { col, row } = candy; // destructure the vars
+  let letters = ["a", "b", "c", "d", "e", "f", "g", "h"];
+
+  // Set the color
+  $(`.candy.${row}${col}`).css({ backgroundColor: candy });
+  allCandies[`${letters[row]}${col + 1}`] = info; // Store all candy in a single object
 };
