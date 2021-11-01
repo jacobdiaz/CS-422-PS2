@@ -24,6 +24,7 @@ const DEFAULT_BOARD_SIZE = 8;
 // data model at global scope for easier debugging
 var board;
 var rules;
+const letters = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
 // initialize board
 // if ($.getUrlVar("size") && $.getUrlVar("size") >= 3) {
@@ -42,6 +43,15 @@ $(document).ready(function () {
   // When start button is clicked
   $("#start-btn").click(() => {
     console.log("start button clicked");
+  });
+
+  // When crush button is pressed
+  $(".crush-btn").click(() => {
+    setTimeout(function () {
+      rules.moveCandiesDown();
+    }, 1000);
+
+    rules.removeCrushes(rules.getCandyCrushes());
   });
   rules = new Rules(board);
   rules.prepareNewGame();
@@ -112,11 +122,12 @@ $(board).on("scoreUpdate", function (e, info) {
 
 const renderBoard = () => {
   // Creates the grid
-  const letters = ["a", "b", "c", "d", "e", "f", "g", "h"];
   for (let i = 1; i <= 8; i++) {
     $(".grid").append(`<td class='tr${i}'></td>`);
     for (let j = 1; j <= 8; j++) {
-      $(`.tr${i}`).append(`<td class='candy ${i - 1}${j - 1}'>${letters[i - 1]}${j}</td>`);
+      $(`.tr${i}`).append(`<td class='candy ${i - 1}${j - 1}'>
+      <span>${letters[i - 1]}${j}</span>
+      </td>`);
     }
   }
 };
@@ -124,10 +135,12 @@ const renderBoard = () => {
 const setCellColors = (info) => {
   const candy = info.candy;
   const { col, row } = candy; // destructure the vars
-  const letters = ["a", "b", "c", "d", "e", "f", "g", "h"];
+  const cell = $(`.candy.${col}${row}`);
 
-  // Set the color
-  $(`.candy.${col}${row}`).css({ backgroundColor: candy });
+  cell.css({ backgroundColor: candy });
+  if (candy == "yellow") {
+    cell.css({ color: "black" });
+  }
   allCandies[`${letters[col]}${row + 1}`] = info; // Store all candy in a single object
 };
 
