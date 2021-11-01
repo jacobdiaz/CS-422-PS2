@@ -31,6 +31,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+
   flex-direction: column;
 }
 /* Clear floats after the columns */
@@ -43,7 +44,12 @@ button {
 .column.c2 {
   width: 50%;
 }
-
+.column.c3 {
+  display: none;
+}
+#pointsPara {
+  display: none;
+}
 .candy {
   /* background: #fff; */
   display: flex;

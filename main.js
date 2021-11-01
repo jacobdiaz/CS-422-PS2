@@ -42,14 +42,26 @@ $(document).ready(function () {
   });
   // When start button is clicked
   $("#start-btn").click(() => {
-    console.log("start button clicked");
+    // Show the third column
+    let thirdCol = $(".column.c3");
+    let pointsPara = $("#pointsPara");
+    thirdCol.css({ display: "flex" });
+    pointsPara.css({ display: "block" });
   });
 
   // When crush button is pressed
   $(".crush-btn").click(() => {
+    let thirdCol = $(".column.c3");
+
+    // Prevent users from using any arrows
+    thirdCol.css({ pointerEvents: "none", opacity: "0.4" });
+
     setTimeout(function () {
       rules.moveCandiesDown();
-    }, 1000);
+        
+      // Allow the user to use the arrows again
+      thirdCol.css({ pointerEvents: "auto", opacity: "1" });
+    }, 1500);
 
     rules.removeCrushes(rules.getCandyCrushes());
   });
