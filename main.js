@@ -34,19 +34,17 @@ board = new Board(DEFAULT_BOARD_SIZE);
 let allCandies = {}; // All candies gets hoisted to the key press funcs
 
 $(document).ready(function () {
-  generateBoard();
+  renderBoard();
 
   $(board).on("add", function (e, info) {
     setCellColors(info);
   });
-
-  rules = new Rules(board);
-  rules.prepareNewGame();
-
   // When start button is clicked
   $("#start-btn").click(() => {
     console.log("start button clicked");
   });
+  rules = new Rules(board);
+  rules.prepareNewGame();
 
   // #region Arrow Button Listers
   $(".arrow.ar-up").click(() => {
@@ -68,45 +66,51 @@ $(document).ready(function () {
 //  Listener for left arrow key
 $(document).keydown(function (e) {
   if (e.keyCode == 37) {
-    handleArrowPress("left");
+    handleArrowPress("left", board);
   }
 });
 
 //  Listener for right arrow key
 $(document).keydown(function (e) {
   if (e.keyCode == 39) {
-    handleArrowPress("right");
+    handleArrowPress("right", board);
   }
 });
 
 //  Listener for up arrow key
 $(document).keydown(function (e) {
   if (e.keyCode == 38) {
-    handleArrowPress("up");
+    handleArrowPress("up", board);
   }
 });
 
 //  Listener for down arrow key
 $(document).keydown(function (e) {
   if (e.keyCode == 40) {
-    handleArrowPress("down");
+    handleArrowPress("down", board);
   }
 });
 
 // move a candy on the board
-$(board).on("move", function (e, info) {});
+$(board).on("move", function (e, info) {
+  //jquery grab element
+  const candy = info.candy;
+  const { col, row } = candy; // destructure the vars
+  const candyElement = $(`.candy.${col}${row}`);
+
+  //jquery change background color
+  candyElement.css({ backgroundColor: candy });
+});
 
 // remove a candy from the board
-$(board).on("remove", function (e, info) {
-  // Your code here.
-});
+$(board).on("remove", function (e, info) {});
 
 // move a candy on the board
 $(board).on("scoreUpdate", function (e, info) {
   // Your code here. To be implemented in pset 2.
 });
 
-const generateBoard = () => {
+const renderBoard = () => {
   // Creates the grid
   const letters = ["a", "b", "c", "d", "e", "f", "g", "h"];
   for (let i = 1; i <= 8; i++) {
@@ -130,28 +134,51 @@ const setCellColors = (info) => {
 const handleArrowPress = (arrowDirection, board) => {
   // get the last character of a string
   let move = $(".move-input").val();
-  let idLastChar = lastChar(move); // to get sibling cut off the last char and inc or dec
-
+  let currentCandy = allCandies[move];
+  let firstChar = move.charAt(0);
+  let lastChar = parseInt(move.charAt(move.length - 1)); // to get sibling cut off the last char and inc or dec
   let infoObject = allCandies[move];
+
+  // Get left right up down candies
+  let downCandy = allCandies[`${firstChar}${incNum(lastChar)}`];
+  let upCandy = allCandies[`${firstChar}${decNum(lastChar)}`];
+  let rightCandy = allCandies[`${incChar(firstChar)}${lastChar}`];
+  let leftCandy = allCandies[`${decChar(firstChar)}${lastChar}`];
+
   switch (arrowDirection) {
     case "left":
-      rules.isMoveTypeValid(infoObject.candy, "left") ? console.log("L") : console.log("invalid");
+      rules.isMoveTypeValid(infoObject.candy, "left") ? board.flipCandies(currentCandy.candy, leftCandy.candy) : console.log("invalid");
       break;
     case "right":
-      rules.isMoveTypeValid(infoObject.candy, "right") ? console.log("R") : console.log("invalid");
+      rules.isMoveTypeValid(infoObject.candy, "right") ? board.flipCandies(currentCandy.candy, rightCandy.candy) : console.log("invalid");
       break;
     case "up":
-      rules.isMoveTypeValid(infoObject.candy, "up") ? console.log("U") : console.log("invalid");
+      rules.isMoveTypeValid(infoObject.candy, "up") ? board.flipCandies(currentCandy.candy, upCandy.candy) : console.log("invalid");
       break;
     case "down":
-      rules.isMoveTypeValid(infoObject.candy, "down") ? console.log("D") : console.log("invalid");
+      rules.isMoveTypeValid(infoObject.candy, "down") ? board.flipCandies(currentCandy.candy, downCandy.candy) : console.log("invalid");
       break;
   }
 };
+const getLastChar = (str) => parseInt(str.slice(-1));
 
-const lastChar = (str) => str.slice(-1);
-
-const incrementLastChar = (num) => {
+const incNum = (num) => {
   let result = parseInt(num) + 1;
-  return result >= 8 ? 0 : result;
+  return result >= 9 ? 0 : result;
+};
+const decNum = (num) => {
+  let result = parseInt(num) - 1;
+  return result <= 0 ? 7 : result;
+};
+
+const incChar = (c) => {
+  let next = String.fromCharCode(c.charCodeAt(0) + 1);
+  return next === "i" ? "a" : next;
+};
+const decChar = (c) => {
+  if (c === "a") {
+    return "h";
+  } else {
+    return String.fromCharCode(c.charCodeAt(0) - 1);
+  }
 };
