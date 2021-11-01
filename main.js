@@ -58,10 +58,19 @@ $(document).ready(function () {
 
     setTimeout(function () {
       rules.moveCandiesDown();
-        
+
       // Allow the user to use the arrows again
       thirdCol.css({ pointerEvents: "auto", opacity: "1" });
     }, 1500);
+
+    rules.removeCrushes(rules.getCandyCrushes());
+  });
+
+  // When crush button is pressed
+  $(".crush-btn").click(() => {
+    setTimeout(function () {
+      rules.moveCandiesDown();
+    }, 1000);
 
     rules.removeCrushes(rules.getCandyCrushes());
   });
@@ -120,7 +129,7 @@ $(board).on("move", function (e, info) {
   const { col, row } = candy; // destructure the vars
   const candyElement = $(`.candy.${col}${row}`);
 
-  //jquery change background color
+  // Set the new color
   candyElement.css({ backgroundColor: candy });
 });
 
@@ -156,6 +165,14 @@ const setCellColors = (info) => {
   allCandies[`${letters[col]}${row + 1}`] = info; // Store all candy in a single object
 };
 
+/*
+ Depending on the arrow pressed the system must know
+the sibling candy to the left, right, up or down in order to be bassed into
+the flip candies board. 
+
+We stored all the candy in the object 'allCandies' so all we have to do
+is grab the coordinate value that represents the combo class of the td
+*/
 const handleArrowPress = (arrowDirection, board) => {
   // get the last character of a string
   let move = $(".move-input").val();
@@ -185,6 +202,10 @@ const handleArrowPress = (arrowDirection, board) => {
       break;
   }
 };
+/*
+    All cells have a coordinate format of "a1", "b2", etc.
+    This region is to convert coordinate val of a1 b2 to 00 11 which is the combo class attached to the td tag
+    */
 const getLastChar = (str) => parseInt(str.slice(-1));
 
 const incNum = (num) => {
