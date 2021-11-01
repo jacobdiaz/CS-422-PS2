@@ -19,7 +19,7 @@ Math.seedrandom(0);
 // });
 
 // constants
-var DEFAULT_BOARD_SIZE = 8;
+const DEFAULT_BOARD_SIZE = 8;
 
 // data model at global scope for easier debugging
 var board;
@@ -31,13 +31,15 @@ var rules;
 // } else {
 board = new Board(DEFAULT_BOARD_SIZE);
 // }
+let allCandies = {}; // All candies gets hoisted to the key press funcs
 
 $(document).ready(function () {
   generateBoard();
+
   $(board).on("add", function (e, info) {
     setCellColors(info);
   });
-  console.log(allCandies);
+
   rules = new Rules(board);
   rules.prepareNewGame();
 
@@ -48,46 +50,46 @@ $(document).ready(function () {
 
   // #region Arrow Button Listers
   $(".arrow.ar-up").click(() => {
-    handleArrowPress("up");
+    handleArrowPress("up", board);
   });
   $(".arrow.ar-down").click(() => {
-    handleArrowPress("down");
+    handleArrowPress("down", board);
   });
   $(".arrow.ar-left").click(() => {
-    handleArrowPress("left");
+    handleArrowPress("left", board);
   });
   $(".arrow.ar-right").click(() => {
-    handleArrowPress("right");
+    handleArrowPress("right", board);
   });
   //#endregion
 });
 
 // #region Arrow Key Listeners
-//  Listener for up arrow key
-$(document).keydown(function (e) {
-  if (e.keyCode == 37) {
-    handleArrowPress("up");
-  }
-});
-
-//  Listener for down arrow key
-$(document).keydown(function (e) {
-  if (e.keyCode == 39) {
-    handleArrowPress("down");
-  }
-});
-
 //  Listener for left arrow key
 $(document).keydown(function (e) {
-  if (e.keyCode == 38) {
+  if (e.keyCode == 37) {
     handleArrowPress("left");
   }
 });
 
 //  Listener for right arrow key
 $(document).keydown(function (e) {
-  if (e.keyCode == 40) {
+  if (e.keyCode == 39) {
     handleArrowPress("right");
+  }
+});
+
+//  Listener for up arrow key
+$(document).keydown(function (e) {
+  if (e.keyCode == 38) {
+    handleArrowPress("up");
+  }
+});
+
+//  Listener for down arrow key
+$(document).keydown(function (e) {
+  if (e.keyCode == 40) {
+    handleArrowPress("down");
   }
 });
 
@@ -115,37 +117,41 @@ const generateBoard = () => {
   }
 };
 
-let allCandies = {}; // All candies gets hoisted to the key press funcs
-
 const setCellColors = (info) => {
   const candy = info.candy;
   const { col, row } = candy; // destructure the vars
   const letters = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
   // Set the color
-  $(`.candy.${row}${col}`).css({ backgroundColor: candy });
-  allCandies[`${letters[row]}${col + 1}`] = info; // Store all candy in a single object
+  $(`.candy.${col}${row}`).css({ backgroundColor: candy });
+  allCandies[`${letters[col]}${row + 1}`] = info; // Store all candy in a single object
 };
 
-const handleArrowPress = (arrowDirection) => {
+const handleArrowPress = (arrowDirection, board) => {
+  // get the last character of a string
   let move = $(".move-input").val();
+  let idLastChar = lastChar(move); // to get sibling cut off the last char and inc or dec
+
   let infoObject = allCandies[move];
   switch (arrowDirection) {
     case "left":
-      console.log(infoObject.candy);
-      rules.isMoveTypeValid(infoObject.candy, "left") ? console.log("valid") : console.log("invalid");
+      rules.isMoveTypeValid(infoObject.candy, "left") ? console.log("L") : console.log("invalid");
       break;
     case "right":
-      console.log(infoObject.candy);
-      rules.isMoveTypeValid(infoObject.candy, "right") ? console.log("valid") : console.log("invalid");
+      rules.isMoveTypeValid(infoObject.candy, "right") ? console.log("R") : console.log("invalid");
       break;
     case "up":
-      console.log(infoObject.candy);
-      rules.isMoveTypeValid(infoObject.candy, "up") ? console.log("valid") : console.log("invalid");
+      rules.isMoveTypeValid(infoObject.candy, "up") ? console.log("U") : console.log("invalid");
       break;
     case "down":
-      console.log(infoObject.candy);
-      rules.isMoveTypeValid(infoObject.candy, "down") ? console.log("valid") : console.log("invalid");
+      rules.isMoveTypeValid(infoObject.candy, "down") ? console.log("D") : console.log("invalid");
       break;
   }
+};
+
+const lastChar = (str) => str.slice(-1);
+
+const incrementLastChar = (num) => {
+  let result = parseInt(num) + 1;
+  return result >= 8 ? 0 : result;
 };
