@@ -26,7 +26,6 @@ var Rules = function (board) {
    *
    */
   this.prepareNewGame = function () {
-    console.log("prepareNewGame");
     scoring = false;
     while (true) {
       this.populateBoard();
