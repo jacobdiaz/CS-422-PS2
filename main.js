@@ -65,6 +65,15 @@ $(document).ready(function () {
 
     rules.removeCrushes(rules.getCandyCrushes());
   });
+
+  // When crush button is pressed
+  $(".crush-btn").click(() => {
+    setTimeout(function () {
+      rules.moveCandiesDown();
+    }, 1000);
+
+    rules.removeCrushes(rules.getCandyCrushes());
+  });
   rules = new Rules(board);
   rules.prepareNewGame();
 
